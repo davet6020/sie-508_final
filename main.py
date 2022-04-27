@@ -1,5 +1,5 @@
 """
-This is the main program that when you run it, it loads the application
+This is the main program that when you run it, it loads the application main menu
 """
 
 # Import external modules
