@@ -50,37 +50,6 @@ class MainMenu:
     rbl = Label(self.gui, text=self.rb_srch.get())
     # rbl.grid(row=6)
 
-  # Add text boxes to the form
-  def form_list(self):
-    # Create frame for input fields
-    frame_list = LabelFrame(self.gui, padx=10, pady=10)
-
-    conn = sqlite3.connect('db/MusicInventory.db')
-    c = conn.cursor()
-
-    v_albums = """select al.AlbumTitle, ar.ArtistName, m.MediaTypeName from Album as al, Artist as ar, MediaType
-    as m where al.ArtistId = ar.ArtistId and al.MediaTypeId = m.MediaTypeId order by ar.ArtistName, al.AlbumTitle"""
-    rows = c.execute(v_albums).fetchall()
-
-    # find total number of rows and
-    # columns in list
-    total_rows = len(rows)
-    total_cols = len(rows[0])
-
-    print('total_rows: {}'.format(total_rows))
-    print('total_columns: {}'.format(total_cols))
-
-    # code for creating table
-    for i in range(total_rows):
-      for j in range(total_cols):
-        self.e = Entry(frame_list, width=30, fg='black', font=('Arial', 12))
-
-        self.e.grid(row=i, column=j)
-        self.e.insert(END, rows[i][j])
-
-    frame_list.grid(padx=10, pady=10)
-    self.fl = frame_list
-
   # Display the form
   def form_display(self):
     self.gui.mainloop()

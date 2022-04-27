@@ -10,13 +10,14 @@ from MainMenu import MainMenu
 # Import libraries
 import sqlite3
 
-mci = MainMenu()
+main_menu = MainMenu()
+main_menu.form_display()
 
 # mci = FormBuilder()
 # # mci.form_inputs('readonly') # Choices are: disabled, normal, or readonly
 # # mci.form_controls()
 # mci.form_list()
-mci.form_display()
+
 
 
 # Create two frames, one for input fields
