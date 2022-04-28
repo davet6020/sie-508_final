@@ -12,6 +12,7 @@ class MainMenu:
     self.gui.iconbitmap('img/music.ico')
     self.rb_srch = IntVar()
     self.rb_srch.set("1")
+    self.form_type = ''
     self.main_form()
 
   def main_form(self):
@@ -35,22 +36,24 @@ class MainMenu:
     frame_butts = LabelFrame(self.gui, padx=10, pady=10)
     frame_butts.grid(padx=10, pady=10)
 
-    btn_show_albums = Button(frame_butts, width=15, text="Show All Albums", font=('Ariel', 10), command=self.show_all_albums)
+    btn_show_albums = Button(frame_butts, width=15, text="Show All Albums", font=('Ariel', 10),
+                             command=lambda: self.show_all_form("albums"))
     btn_show_albums.grid(row=0, column=0, padx=20, pady=10)
 
-    btn_show_artists = Button(frame_butts, width=15, text="Show All Artists", font=('Ariel', 10), command=self.show_all_artists)
+    btn_show_artists = Button(frame_butts, width=15, text="Show All Artists", font=('Ariel', 10),
+                              command=lambda: self.show_all_form("artists"))
     btn_show_artists.grid(row=0, column=1, padx=20, pady=10)
 
     btn_exit = Button(frame_butts, width=15, text="Exit", font=('Ariel', 10), command=self.gui.destroy)
     btn_exit.grid(row=0, column=2, padx=20, pady=10, sticky=(W))
 
-  def show_all_albums(self):
-    saa = ShowAllForm('Show All Albums')
-    saa.form_display()
+  def show_all_form(self, form_type):
+    self.form_type = form_type
 
-  def show_all_artists(self):
-    saa = ShowAllForm('Show All Artists')
-    saa.form_display()
+    if self.form_type == 'artists':
+      saa = ShowAllForm('artists')
+    else:
+      saa = ShowAllForm('albums')
 
   def search(self):
     rbl = Label(self.gui, text=self.rb_srch.get())
