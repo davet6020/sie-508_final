@@ -2,6 +2,8 @@
 import sqlite3
 import tkinter
 
+from Album import Album
+from Artist import Artist
 from ShowAllForm import ShowAllForm
 from tkinter import *
 
@@ -15,6 +17,7 @@ class MainMenu:
     self.rb_srch = IntVar()
     self.rb_srch.set("1")
     self.form_type = ''
+    self.srch_type = ''
     self.srch_val = ''
     self.txt_srch = StringVar()
     self.txt_srch.set('')
@@ -39,8 +42,11 @@ class MainMenu:
     Radiobutton(frame_srch, text='Album', variable=self.rb_srch, value=1).grid(row=2, column=0)
     Radiobutton(frame_srch, text='Artist', variable=self.rb_srch, value=2).grid(row=2, column=1, sticky=(W))
 
+    # To help a lazy searcher, chain .lower() to get() and search table for the lower version of the search string.
+    # btn_srch = Button(frame_srch, width=15, text="Search", font=('Ariel', 10), command=lambda: self.search(self.rb_srch.get(), self.txt_srch.get().lower()))
+
     btn_srch = Button(frame_srch, width=15, text="Search", font=('Ariel', 10),
-                      command=lambda: self.search(self.rb_srch.get(), self.txt_srch.get()))
+                      command=lambda: self.search(self.rb_srch.get(), self.txt_srch.get().lower()))
     btn_srch.grid(row=4, column=0, padx=20, pady=10)
 
     self.txt_srch = Entry(frame_srch, width=60, font=('Ariel', 13))
@@ -74,17 +80,11 @@ class MainMenu:
     self.srch_val = srch_val
 
     if self.srch_type == 1:  # Album Search by Album Name to see if it is in the inventory
-      q = """select al.AlbumTitle, ar.ArtistName, m.MediaTypeName from Album as al, Artist as ar, MediaType as m
-          where al.ArtistId = ar.ArtistId and al.MediaTypeId = m.MediaTypeId and al.AlbumTitle = '""" + str(
-      self.srch_val) + "'"
+      s = Album()
+      s.search(self.srch_val)
     else:             # Artist Search by Artist name to see all albums associated to that Artist
-      q = """select al.AlbumTitle, ar.ArtistName, m.MediaTypeName from Album as al, Artist as ar, MediaType as m
-                where al.ArtistId = ar.ArtistId and al.MediaTypeId = m.MediaTypeId and ar.ArtistName = '""" + str(
-        self.srch_val) + "'"
-
-    r = self.c.execute(q).fetchall()
-    print(q)
-    print(r)
+      s = Artist()
+      s.search(self.srch_val)
 
   # Display the form
   def form_display(self):
