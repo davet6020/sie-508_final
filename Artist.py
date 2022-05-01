@@ -9,7 +9,7 @@ class Artist:
 
   def __init__(self):
     self.show_artist = Tk()
-    self.show_artist.geometry("900x500")
+    self.show_artist.geometry("900x900")
     self.title = 'Show All Artists'
     self.columns = ('Artist Name', 'Album Title', 'Media Type')
     self.show_artist.title(self.title)
@@ -20,20 +20,19 @@ class Artist:
     self.c = self.conn.cursor()
 
   def search(self, srch_val):
-    self.srch_val = srch_val
-
-    # Artist Search by Artist name to see all albums associated to that Artist
-    q = """select ar.ArtistName, al.AlbumTitle, m.MediaTypeName from Album as al, Artist as ar, MediaType as m
-                    where al.ArtistId = ar.ArtistId and al.MediaTypeId = m.MediaTypeId and lower(ar.ArtistName) = '""" + str(
-      self.srch_val) + "'"
+    if len(srch_val) < 1:
+      self.columns = ('Artist Name',)
+      q = """select ar.ArtistName from Artist as ar order by ar.ArtistName"""
+    else:
+      self.srch_val = srch_val
+      q = """select ar.ArtistName, al.AlbumTitle, m.MediaTypeName from Album as al, Artist as ar, MediaType as m
+                          where al.ArtistId = ar.ArtistId and al.MediaTypeId = m.MediaTypeId and lower(ar.ArtistName) = '""" + str(
+        self.srch_val) + "'"
 
     r = self.c.execute(q).fetchall()
     self.show(r)
 
   def show(self, r):
-    lbl_mm = Label(self.show_artist, text=self.title, pady=10, font=('MS Serif', 18))
-    lbl_mm.grid(row=0, column=0)
-
     rows = [self.columns] + r
 
     # find total number of rows and

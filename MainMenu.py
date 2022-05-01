@@ -4,6 +4,8 @@ import tkinter
 
 from Album import Album
 from Artist import Artist
+from Genre import Genre
+from MediaType import MediaType
 from ShowAllForm import ShowAllForm
 from tkinter import *
 
@@ -41,6 +43,8 @@ class MainMenu:
 
     Radiobutton(frame_srch, text='Album', variable=self.rb_srch, value=1).grid(row=2, column=0)
     Radiobutton(frame_srch, text='Artist', variable=self.rb_srch, value=2).grid(row=2, column=1, sticky=(W))
+    Radiobutton(frame_srch, text='Genre', variable=self.rb_srch, value=3).grid(row=3, column=0)
+    Radiobutton(frame_srch, text='Media', variable=self.rb_srch, value=4).grid(row=3, column=1, sticky=(W))
 
     # To help a lazy searcher, chain .lower() to get() and search table for the lower version of the search string.
     # btn_srch = Button(frame_srch, width=15, text="Search", font=('Ariel', 10), command=lambda: self.search(self.rb_srch.get(), self.txt_srch.get().lower()))
@@ -56,35 +60,62 @@ class MainMenu:
     frame_butts = LabelFrame(self.gui, padx=10, pady=10)
     frame_butts.grid(padx=10, pady=10)
 
-    btn_show_albums = Button(frame_butts, width=15, text="Show All Albums", font=('Ariel', 10),
+    btn_show_albums = Button(frame_butts, width=18, text="Show All Albums", font=('Ariel', 10),
                              command=lambda: self.show_all_form("albums"))
-    btn_show_albums.grid(row=0, column=0, padx=20, pady=10)
+    btn_show_albums.grid(row=0, column=0, padx=8, pady=10, sticky=(E))
 
-    btn_show_artists = Button(frame_butts, width=15, text="Show All Artists", font=('Ariel', 10),
+    btn_show_artists = Button(frame_butts, width=18, text="Show All Artists", font=('Ariel', 10),
                               command=lambda: self.show_all_form("artists"))
-    btn_show_artists.grid(row=0, column=1, padx=20, pady=10)
+    btn_show_artists.grid(row=0, column=1, padx=8, pady=10, sticky=(W))
 
-    btn_exit = Button(frame_butts, width=15, text="Exit", font=('Ariel', 10), command=self.gui.destroy)
-    btn_exit.grid(row=0, column=2, padx=20, pady=10, sticky=(W))
+    btn_genre = Button(frame_butts, width=18, text="Show All Genre Types", font=('Ariel', 10),
+                       command=lambda: self.show_all_form("genre"))
+    btn_genre.grid(row=0, column=2, padx=8, pady=10, sticky=(W))
+
+    btn_media = Button(frame_butts, width=18, text="Show All Media Types", font=('Ariel', 10),
+                       command=lambda: self.show_all_form("media"))
+    btn_media.grid(row=0, column=3, padx=8, pady=10, sticky=(W))
+
+    btn_exit = Button(frame_butts, width=18, text="Exit", font=('Ariel', 14), command=self.gui.destroy)
+    btn_exit.grid(row=1, column=0, columnspan=4, padx=250, pady=10, sticky=(W))
+
+  def crud(self, thing_to_crud):
+    if thing_to_crud == 'media':
+      crud = MediaType()
+      crud.crud('create')
 
   def show_all_form(self, form_type):
     self.form_type = form_type
 
     if self.form_type == 'artists':
       saa = ShowAllForm('artists')
-    else:
+    elif self.form_type == 'albums':
       saa = ShowAllForm('albums')
+    elif self.form_type == 'genre':
+      saa = ShowAllForm('genre')
+    elif self.form_type == 'media':
+      saa = ShowAllForm('media')
+    else:
+      pass
 
   def search(self, srch_type, srch_val):
     self.srch_type = srch_type
     self.srch_val = srch_val
 
-    if self.srch_type == 1:  # Album Search by Album Name to see if it is in the inventory
+    if self.srch_type == 1:       # Album Search by Album Name to see if it is in the inventory
       s = Album()
       s.search(self.srch_val)
-    else:             # Artist Search by Artist name to see all albums associated to that Artist
+    elif self.srch_type == 2:     # Artist Search by Artist name to see all albums associated to that Artist
       s = Artist()
       s.search(self.srch_val)
+    elif self.srch_type == 3:     # Genre Search by Genre to see all Artists of the selected Genre
+      s = Genre()
+      s.search(self.srch_val)
+    elif self.srch_type == 4:     # Media Search by Media to see all Albums of the selected Media
+      s = MediaType()
+      s.search(self.srch_val)
+    else:
+      pass
 
   # Display the form
   def form_display(self):

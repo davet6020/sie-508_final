@@ -8,7 +8,7 @@ class Search:
 
   def __init__(self, form_type):
     self.show_all_form = Tk()
-    self.show_all_form.geometry("900x500")
+    self.show_all_form.geometry("900x900")
     self.form_type = form_type
 
     if self.form_type == 'artists':
@@ -62,7 +62,7 @@ class Search:
 
   def show_all_albums(self):
     self.v_albums = """select al.AlbumTitle, ar.ArtistName, m.MediaTypeName from Album as al, Artist as ar, MediaType as m
-    where al.ArtistId = ar.ArtistId and al.MediaTypeId = m.MediaTypeId limit 5"""
+    where al.ArtistId = ar.ArtistId and al.MediaTypeId = m.MediaTypeId"""
 
     r = self.c.execute(self.v_albums).fetchall()
     rows = [self.columns] + r

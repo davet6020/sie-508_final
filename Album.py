@@ -8,7 +8,7 @@ class Album:
 
   def __init__(self):
     self.show_albums = Tk()
-    self.show_albums.geometry("900x500")
+    self.show_albums.geometry("900x900")
     self.title = 'Show All Albums'
     self.columns = ('Album Title', 'Artist Name', 'Media Type')
     self.show_albums.title(self.title)
@@ -19,25 +19,20 @@ class Album:
     self.c = self.conn.cursor()
 
   def search(self, srch_val):
-    self.srch_val = srch_val
-
-    # Album Search by Album Name to see if it is in the inventory
-    q = """select al.AlbumTitle, ar.ArtistName, m.MediaTypeName from Album as al, Artist as ar, MediaType as m
-                  where al.ArtistId = ar.ArtistId and al.MediaTypeId = m.MediaTypeId and lower(al.AlbumTitle) = '""" + str(
-      self.srch_val) + "'"
+    if len(srch_val) < 1:
+      self.columns = ('Album Title',)
+      q = """select al.AlbumTitle from Album as al order by al.AlbumTitle"""
+    else:
+      self.srch_val = srch_val
+      q = """select al.AlbumTitle, ar.ArtistName, m.MediaTypeName from Album as al, Artist as ar, MediaType as m
+                        where al.ArtistId = ar.ArtistId and al.MediaTypeId = m.MediaTypeId and lower(al.AlbumTitle) = '""" + str(
+        self.srch_val) + "'"
 
     r = self.c.execute(q).fetchall()
 
     self.show(r)
 
-    print('IM IN THE ALBUM CLASS')
-    print(q)
-    print(r)
-
   def show(self, r):
-    lbl_mm = Label(self.show_albums, text=self.title, pady=10, font=('MS Serif', 18))
-    lbl_mm.grid(row=0, column=0)
-
     rows = [self.columns] + r
 
     # find total number of rows and

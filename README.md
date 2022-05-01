@@ -22,9 +22,9 @@ Create Tkinter form for:
 
   
 What is left
- - Create popup info form for Artist Searches
- - Create popup info form for Album Searches
- - (Might be fun to list all by genre and mediatype)
+ X- Create popup info form for Artist Searches
+ X- Create popup info form for Album Searches
+ X- (Might be fun to list all by genre and mediatype)
  
  # One form for all of this
  - Add a new Album
