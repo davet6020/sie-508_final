@@ -1,5 +1,7 @@
 # Import libraries
 import sqlite3
+import tkinter
+
 from ShowAllForm import ShowAllForm
 from tkinter import *
 
@@ -13,7 +15,18 @@ class MainMenu:
     self.rb_srch = IntVar()
     self.rb_srch.set("1")
     self.form_type = ''
+    self.srch_val = ''
+    self.txt_srch = StringVar()
+    self.txt_srch.set('')
+    self.txt_srch.trace("w", self.printer)
+
+    self.conn = sqlite3.connect('db/MusicInventory.db')
+    self.c = self.conn.cursor()
+
     self.main_form()
+
+  def printer(self, index, mode):
+    print(self.txt_srch.get())
 
   def main_form(self):
     lbl_mm = Label(self.gui, text="Main Menu", pady=10, font=('MS Serif', 18))
@@ -26,11 +39,12 @@ class MainMenu:
     Radiobutton(frame_srch, text='Album', variable=self.rb_srch, value=1).grid(row=2, column=0)
     Radiobutton(frame_srch, text='Artist', variable=self.rb_srch, value=2).grid(row=2, column=1, sticky=(W))
 
-    btn_srch = Button(frame_srch, width=15, text="Search", font=('Ariel', 10), command=self.search())
+    btn_srch = Button(frame_srch, width=15, text="Search", font=('Ariel', 10),
+                      command=lambda: self.search(self.rb_srch.get(), self.txt_srch.get()))
     btn_srch.grid(row=4, column=0, padx=20, pady=10)
 
-    txt_srch = Entry(frame_srch, width=60, font=('Ariel', 13))
-    txt_srch.grid(row=4, column=1, padx=20, pady=10)
+    self.txt_srch = Entry(frame_srch, width=60, font=('Ariel', 13))
+    self.txt_srch.grid(row=4, column=1, padx=20, pady=10)
 
     # Create frame for buttons
     frame_butts = LabelFrame(self.gui, padx=10, pady=10)
@@ -55,9 +69,22 @@ class MainMenu:
     else:
       saa = ShowAllForm('albums')
 
-  def search(self):
-    rbl = Label(self.gui, text=self.rb_srch.get())
-    # rbl.grid(row=6)
+  def search(self, srch_type, srch_val):
+    self.srch_type = srch_type
+    self.srch_val = srch_val
+
+    if self.srch_type == 1:  # Album Search by Album Name to see if it is in the inventory
+      q = """select al.AlbumTitle, ar.ArtistName, m.MediaTypeName from Album as al, Artist as ar, MediaType as m
+          where al.ArtistId = ar.ArtistId and al.MediaTypeId = m.MediaTypeId and al.AlbumTitle = '""" + str(
+      self.srch_val) + "'"
+    else:             # Artist Search by Artist name to see all albums associated to that Artist
+      q = """select al.AlbumTitle, ar.ArtistName, m.MediaTypeName from Album as al, Artist as ar, MediaType as m
+                where al.ArtistId = ar.ArtistId and al.MediaTypeId = m.MediaTypeId and ar.ArtistName = '""" + str(
+        self.srch_val) + "'"
+
+    r = self.c.execute(q).fetchall()
+    print(q)
+    print(r)
 
   # Display the form
   def form_display(self):
