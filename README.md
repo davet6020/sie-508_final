@@ -26,6 +26,16 @@ What is left
  X- Create popup info form for Album Searches
  X- (Might be fun to list all by genre and mediatype)
  
+
+ **** - Can I add a button next to each value on a list
+ eg
+  blues  [create] [update] [delete]
+  jazz   [create] [update] [delete]
+  pop    [create] [update] [delete]
+  rock   [create] [update] [delete]
+
+  
+
  # One form for all of this
  - Add a new Album
  - Add a new Artist

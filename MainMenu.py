@@ -21,6 +21,7 @@ class MainMenu:
     self.form_type = ''
     self.srch_type = ''
     self.srch_val = ''
+    self.thing_to_crud = ''
     self.txt_srch = StringVar()
     self.txt_srch.set('')
     self.txt_srch.trace("w", self.printer)
@@ -45,9 +46,6 @@ class MainMenu:
     Radiobutton(frame_srch, text='Artist', variable=self.rb_srch, value=2).grid(row=2, column=1, sticky=(W))
     Radiobutton(frame_srch, text='Genre', variable=self.rb_srch, value=3).grid(row=3, column=0)
     Radiobutton(frame_srch, text='Media', variable=self.rb_srch, value=4).grid(row=3, column=1, sticky=(W))
-
-    # To help a lazy searcher, chain .lower() to get() and search table for the lower version of the search string.
-    # btn_srch = Button(frame_srch, width=15, text="Search", font=('Ariel', 10), command=lambda: self.search(self.rb_srch.get(), self.txt_srch.get().lower()))
 
     btn_srch = Button(frame_srch, width=15, text="Search", font=('Ariel', 10),
                       command=lambda: self.search(self.rb_srch.get(), self.txt_srch.get().lower()))
@@ -80,7 +78,8 @@ class MainMenu:
     btn_exit.grid(row=1, column=0, columnspan=4, padx=250, pady=10, sticky=(W))
 
   def crud(self, thing_to_crud):
-    if thing_to_crud == 'media':
+    self.thing_to_crud = thing_to_crud
+    if self.thing_to_crud == 'media':
       crud = MediaType()
       crud.crud('create')
 

@@ -69,8 +69,8 @@ class MediaType:
     else:
       self.srch_val = srch_val
       q = """select al.AlbumTitle, m.MediaTypeName from Album as al, MediaType as m
-                    where al.MediaTypeId = m.MediaTypeId and lower(m.MediaTypeName) = '""" + str(
-      self.srch_val) + "' order by al.AlbumTitle"
+                    where al.MediaTypeId = m.MediaTypeId and lower(m.MediaTypeName) = '""" + \
+          str(self.srch_val) + "' order by al.AlbumTitle"
 
     r = self.c.execute(q).fetchall()
     self.show(r)
