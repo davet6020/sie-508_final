@@ -77,7 +77,6 @@ class Genre:
     self.btn_delete.after(10, self.btn_delete.destroy)
     self.btn_update.after(10, self.btn_update.destroy)
 
-    print('create stuff')
     e = Entry(self.g_frame, width=40, fg='black', font=('Arial', 12))
     e.grid(row=1, column=3, sticky=(W))
     btn_save = Button(self.g_frame, text='Save', command=lambda: self.create_item(e.get()))
