@@ -13,7 +13,7 @@ class MainMenu:
 
   def __init__(self):
     self.gui = Tk()
-    self.gui.geometry("800x400")
+    self.gui.geometry("800x800")
     self.gui.title('Music Collection Inventory')
     self.gui.iconbitmap('img/music.ico')
     self.rb_srch = IntVar()
