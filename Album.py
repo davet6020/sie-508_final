@@ -13,7 +13,7 @@ class Album:
     self.title = 'Show All Albums'
     self.al_frame.title(self.title)
     self.al_frame.iconbitmap('img/music.ico')
-    self.al_frame.geometry("150x150")
+    self.al_frame.geometry("900x800")
 
     self.al_tree = tkinter.ttk.Treeview(self.al_frame, height=30, padding=4)
     # Tree Columns
