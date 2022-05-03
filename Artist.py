@@ -36,7 +36,6 @@ class Artist:
     self.c = self.conn.cursor()
 
   def search(self, srch_val):
-
     if len(srch_val) < 1:
       q = """select ar.ArtistName, ar.oid from Artist as ar order by ar.ArtistName"""
     else:

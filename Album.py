@@ -8,8 +8,9 @@ from io import BytesIO
 
 class Album:
 
-  def __init__(self):
+  def __init__(self, master):
     self.al_frame = Tk()
+    self.gui = master
     self.title = 'Show All Albums'
     self.al_frame.title(self.title)
     self.al_frame.iconbitmap('img/music.ico')
@@ -54,6 +55,7 @@ class Album:
       r = self.c.execute(q).fetchall()
       self.show(r)
     else:
+      self.al_frame.destroy()
       self.srch_val = srch_val
       q = """select al.AlbumTitle, ar.ArtistName, m.MediaTypeName, al.ImageURL from Album as al, Artist as ar, MediaType as m
           where  al.ArtistId = ar.ArtistId and al.MediaTypeId = m.MediaTypeId and lower(al.AlbumTitle) = '""" + str(self.srch_val) + "' order by al.AlbumTitle"
@@ -68,27 +70,30 @@ class Album:
       m_name = rows[i][2]
       al_img = rows[i][3]
 
-    lbl_album_title1 = Label(font=('Ariel', 14), text="Album Title: ")
-    lbl_album_title1.grid(row=1, column=1)
-    lbl_album_title2 = Label(font=('Ariel', 14), text=al_name)
-    lbl_album_title2.grid(row=1, column=2)
+    frame_info = LabelFrame(self.gui, padx=10, pady=10)
+    frame_info.grid(padx=10, pady=10)
 
-    lbl_artist_title1 = Label(self.al_frame, font=('Ariel', 14), text="Artist Name: ")
+    lbl_album_title1 = Label(frame_info, font=('Ariel', 14), text="Album Title: ")
+    lbl_album_title1.grid(row=8, column=1)
+    lbl_album_title2 = Label(frame_info, font=('Ariel', 14), text=al_name)
+    lbl_album_title2.grid(row=8, column=2, sticky=(W))
+
+    lbl_artist_title1 = Label(frame_info, font=('Ariel', 14), text="Artist Name: ")
     lbl_artist_title1.grid(row=2, column=1)
-    lbl_artist_title2 = Label(self.al_frame, font=('Ariel', 14), text=ar_name)
-    lbl_artist_title2.grid(row=2, column=2)
+    lbl_artist_title2 = Label(frame_info, font=('Ariel', 14), text=ar_name)
+    lbl_artist_title2.grid(row=2, column=2, sticky=(W))
 
-    lbl_media_type1 = Label(self.al_frame, font=('Ariel', 14), text="Media Type: ")
+    lbl_media_type1 = Label(frame_info, font=('Ariel', 14), text="Media Type: ")
     lbl_media_type1.grid(row=3, column=1)
-    lbl_media_type2 = Label(self.al_frame, font=('Ariel', 14), text=m_name)
-    lbl_media_type2.grid(row=3, column=2)
+    lbl_media_type2 = Label(frame_info, font=('Ariel', 14), text=m_name)
+    lbl_media_type2.grid(row=3, column=2, sticky=(W))
 
     u = urlopen(al_img)
     raw_data = u.read()
     u.close()
 
     im = Image.open(BytesIO(raw_data))
-    photo = ImageTk.PhotoImage(im.resize((200, 200), Image.ANTIALIAS))
+    photo = ImageTk.PhotoImage(im.resize((300, 300), Image.ANTIALIAS))
 
     label = Label(image=photo)
     label.image = photo

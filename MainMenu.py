@@ -8,6 +8,7 @@ from Genre import Genre
 from MediaType import MediaType
 from ShowAllForm import ShowAllForm
 from tkinter import *
+from idlelib.tooltip import Hovertip
 
 class MainMenu:
 
@@ -25,6 +26,8 @@ class MainMenu:
     self.txt_srch = StringVar()
     self.txt_srch.set('')
     self.txt_srch.trace("w", self.printer)
+    self.what_widget = ''
+    self.msg = ''
 
     self.conn = sqlite3.connect('db/MusicInventory.db')
     self.c = self.conn.cursor()
@@ -54,28 +57,43 @@ class MainMenu:
     self.txt_srch = Entry(frame_srch, width=60, font=('Ariel', 13))
     self.txt_srch.grid(row=4, column=1, padx=20, pady=10)
 
+    xmsg = """
+    1. Select radio button of what type of item you want to search.\n'
+    2. Type in Name of item to search for. (case insensitive)\n
+    3. Click the Search button.\n
+    Note: Clicking Search button without specifying item Name \n
+    returns all of the items of the radio button type selected.
+    """
+    self.tooltip(frame_srch, xmsg)
+    # self.tooltip(self.txt_srch, 'Type in name of what you are searching for.   If empty, returns all rows')
+
     # Create frame for buttons
     frame_butts = LabelFrame(self.gui, padx=10, pady=10)
     frame_butts.grid(padx=10, pady=10)
 
-    btn_show_albums = Button(frame_butts, width=18, text="Show All Albums", font=('Ariel', 10),
-                             command=lambda: self.show_all_form("albums"))
-    btn_show_albums.grid(row=0, column=0, padx=8, pady=10, sticky=(E))
-
-    btn_show_artists = Button(frame_butts, width=18, text="Show All Artists", font=('Ariel', 10),
-                              command=lambda: self.show_all_form("artists"))
-    btn_show_artists.grid(row=0, column=1, padx=8, pady=10, sticky=(W))
-
-    btn_genre = Button(frame_butts, width=18, text="Show All Genre Types", font=('Ariel', 10),
-                       command=lambda: self.show_all_form("genre"))
-    btn_genre.grid(row=0, column=2, padx=8, pady=10, sticky=(W))
-
-    btn_media = Button(frame_butts, width=18, text="Show All Media Types", font=('Ariel', 10),
-                       command=lambda: self.show_all_form("media"))
-    btn_media.grid(row=0, column=3, padx=8, pady=10, sticky=(W))
+    # btn_show_albums = Button(frame_butts, width=18, text="Show All Albums", font=('Ariel', 10),
+    #                          command=lambda: self.show_all_form("albums"))
+    # btn_show_albums.grid(row=0, column=0, padx=8, pady=10, sticky=(E))
+    #
+    # btn_show_artists = Button(frame_butts, width=18, text="Show All Artists", font=('Ariel', 10),
+    #                           command=lambda: self.show_all_form("artists"))
+    # btn_show_artists.grid(row=0, column=1, padx=8, pady=10, sticky=(W))
+    #
+    # btn_genre = Button(frame_butts, width=18, text="Show All Genre Types", font=('Ariel', 10),
+    #                    command=lambda: self.show_all_form("genre"))
+    # btn_genre.grid(row=0, column=2, padx=8, pady=10, sticky=(W))
+    #
+    # btn_media = Button(frame_butts, width=18, text="Show All Media Types", font=('Ariel', 10),
+    #                    command=lambda: self.show_all_form("media"))
+    # btn_media.grid(row=0, column=3, padx=8, pady=10, sticky=(W))
 
     btn_exit = Button(frame_butts, width=18, text="Exit", font=('Ariel', 14), command=self.gui.destroy)
     btn_exit.grid(row=1, column=0, columnspan=4, padx=250, pady=10, sticky=(W))
+
+  def tooltip(self, what_widget, msg):
+    self.what_widget = what_widget
+    self.msg = msg
+    mytip = Hovertip(self.what_widget, msg)
 
   def crud(self, thing_to_crud):
     self.thing_to_crud = thing_to_crud
@@ -102,7 +120,7 @@ class MainMenu:
     self.srch_val = srch_val
 
     if self.srch_type == 1:       # Album Search by Album Name to see if it is in the inventory
-      s = Album()
+      s = Album(self.gui)
       s.search(self.srch_val)
     elif self.srch_type == 2:     # Artist Search by Artist name to see all albums associated to that Artist
       s = Artist()

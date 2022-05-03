@@ -4,7 +4,6 @@ This is the main program that when you run it, it loads the application main men
 
 # Import external modules
 import config
-from FormBuilder import FormBuilder
 from MainMenu import MainMenu
 
 # Import libraries
