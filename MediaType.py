@@ -9,12 +9,21 @@ class MediaType:
 
   def __init__(self):
     self.m_frame = Tk()
-    self.title = 'Show All Albums by MediaType'
+    self.title = 'Show All Media Types'
     self.m_frame.title(self.title)
     self.m_frame.iconbitmap('img/music.ico')
     self.m_frame.geometry("900x750")
 
     self.m_tree = tkinter.ttk.Treeview(self.m_frame, height=30, padding=4)
+    # Tree Columns
+    self.m_tree['columns'] = ('MediaType Name',)
+    self.m_tree.column('#0', width=0, stretch=NO)
+    self.m_tree.column('MediaType Name', anchor=W, width=200)
+
+    # Tree Headings
+    self.m_tree.heading('#0', text="", anchor=W)
+    self.m_tree.heading('MediaType Name', text='MediaType Name', anchor=W)
+
     self.item = ''
     self.btn_exit = ''
     self.btn_create = ''
@@ -29,30 +38,10 @@ class MediaType:
 
     if len(srch_val) < 1:
       q = """select m.MediaTypeName, m.oid from MediaType as m order by m.MediaTypeName"""
-      # Tree Columns
-      self.m_tree['columns'] = ('MediaType Name',)
-      self.m_tree.column('#0', width=0, stretch=NO)
-      self.m_tree.column('MediaType Name', anchor=W, width=200)
-
-      # Tree Headings
-      self.m_tree.heading('#0', text="", anchor=W)
-      self.m_tree.heading('MediaType Name', text='MediaType Name', anchor=W)
     else:
       self.srch_val = srch_val
-      q = """select al.AlbumTitle, m.MediaTypeName from Album as al, MediaType as m
-                    where al.MediaTypeId = m.MediaTypeId and lower(m.MediaTypeName) = '""" + \
-          str(self.srch_val) + "' order by al.AlbumTitle"
-
-      # Tree Columns
-      self.m_tree['columns'] = ('Artist Name', 'MediaType Name')
-      self.m_tree.column('#0', width=0, stretch=NO)
-      self.m_tree.column('Artist Name', anchor=W, width=300)
-      self.m_tree.column('MediaType Name', anchor=W, width=100)
-
-      # Tree Headings
-      self.m_tree.heading('#0', text="", anchor=W)
-      self.m_tree.heading('Artist Name', text='Artist Name', anchor=W)
-      self.m_tree.heading('MediaType Name', text='MediaType Name', anchor=W)
+      q = """select m.MediaTypeName, m.oid from MediaType as m where lower(m.MediaTypeName) = '""" + \
+          str(self.srch_val) + "' order by m.MediaTypeName"
 
     r = self.c.execute(q).fetchall()
     self.show(r)

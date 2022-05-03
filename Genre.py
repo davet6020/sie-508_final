@@ -9,12 +9,21 @@ class Genre:
 
   def __init__(self):
     self.g_frame = Tk()
-    self.title = 'Show All Artists by Genre'
+    self.title = 'Show All Genre Types'
     self.g_frame.title(self.title)
     self.g_frame.iconbitmap('img/music.ico')
     self.g_frame.geometry("900x750")
 
     self.g_tree = tkinter.ttk.Treeview(self.g_frame, height=30, padding=4)
+    # Tree Columns
+    self.g_tree['columns'] = ('Genre Name',)
+    self.g_tree.column('#0', width=0, stretch=NO)
+    self.g_tree.column('Genre Name', anchor=W, width=200)
+
+    # Tree Headings
+    self.g_tree.heading('#0', text="", anchor=W)
+    self.g_tree.heading('Genre Name', text='Genre Name', anchor=W)
+
     self.item = ''
     self.btn_exit = ''
     self.btn_create = ''
@@ -29,30 +38,10 @@ class Genre:
 
     if len(srch_val) < 1:
       q = """select g.GenreName, g.oid from Genre as g order by g.GenreName"""
-      # Tree Columns
-      self.g_tree['columns'] = ('Genre Name',)
-      self.g_tree.column('#0', width=0, stretch=NO)
-      self.g_tree.column('Genre Name', anchor=W, width=200)
-
-      # Tree Headings
-      self.g_tree.heading('#0', text="", anchor=W)
-      self.g_tree.heading('Genre Name', text='Genre Name', anchor=W)
     else:
       self.srch_val = srch_val
-      q = """select ar.ArtistName, g.GenreName from Artist as ar, Genre as g
-                          where ar.GenreId = g.GenreId and lower(g.GenreName) = '""" + str(
-        self.srch_val) + "' order by ar.ArtistName"
-
-      # Tree Columns
-      self.g_tree['columns'] = ('Artist Name', 'Genre Name')
-      self.g_tree.column('#0', width=0, stretch=NO)
-      self.g_tree.column('Artist Name', anchor=W, width=300)
-      self.g_tree.column('Genre Name', anchor=W, width=100)
-
-      # Tree Headings
-      self.g_tree.heading('#0', text="", anchor=W)
-      self.g_tree.heading('Artist Name', text='Artist Name', anchor=W)
-      self.g_tree.heading('Genre Name', text='Genre Name', anchor=W)
+      q = """select g.GenreName, g.oid from Genre as g where lower(g.GenreName) = '""" + str(self.srch_val) + "' order by g.GenreName"
+      print(q)
 
     r = self.c.execute(q).fetchall()
     self.show(r)
