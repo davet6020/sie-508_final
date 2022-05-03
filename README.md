@@ -1,53 +1,24 @@
 # sie-508_final
 Final project - Music Collection Inventory
 
-X Design Schema
-X Populate Database
+Objective of the project:
+  Create a python project using OO Principles along with Tkinter as the GUI.
+  The project will be a Music Collection Inventory. It will come with some
+  default data but the user can add/edit/delete as they choose. 
+  Two important features of this project is the CRUD system that allows the
+  user to make changes and that the data is stored in a relational database.
 
-Create Tkinter form for:
-  - Viewing a record but then with a click of the button turns into edit mode
-  - Viewing a record but can click the delete button
-  - View form that is re-used as a Create record form
+The Data:
+  The data is stored in an included database called MusicInventory.db. It is
+  a Sqlite3 database but could easily be converted to MySQL or something else.
+  The database contains four tables, Album, Artist, Genre and Media.
 
-  - Create Tkinter form for Search by Artist Name or Album Name or Both
-      When you click on the found item it opens the viewing read only form 
-  - Special feature: When a url is added to the image field of the form,
-      the app downloads that image and views it. Or something to that effect.
+The User Interface:
+  The user interface is built with Tkinter. Some of the out of the ordinary
+  features are; tool tips, dynamic showing and hiding of buttons, dropdown
+  boxes for adds and updates and online imaging. The online imaging was put
+  in place so that when you add a new album you do not have to download the
+  album cover image. You can just put in a URL that points to the 
+  image and store that in the record. When the record is viewed, your image
+  will be downloaded from the Internet and displayed.
 
-  - Create Tkinter form that lists Albums
-  - Create Tkinter form that lists all Artists
-  - Create Tkinter form that lists all Artists and Albums
-  - Special feature: Filters; sort asc, desc
-
-
-  
-What is left
- X- Create popup info form for Artist Searches
- X- Create popup info form for Album Searches
- X- (Might be fun to list all by genre and mediatype)
- 
-
- **** - Can I add a button next to each value on a list
- eg
-  blues  [create] [update] [delete]
-  jazz   [create] [update] [delete]
-  pop    [create] [update] [delete]
-  rock   [create] [update] [delete]
-
-  
-
- # One form for all of this
- - Add a new Album
- - Add a new Artist
- - Add a new Genre
- - Add a new MediaType
-
- - Edit an existing Album
- - Edit an existing Artist
- - Edit an existing Genre
- - Edit an existing MediaType
-
- - Delete an existing Album
- - Delete an existing Artist
- - Delete an existing Genre
- - Delete an existing MediaType
